@@ -11,23 +11,18 @@ We train our model on CIFAR and MNIST datasets, conditioning on labels, and we a
 
 
 
-<div style="display: flex; justify-content: space-around;">
-
-  <div style="flex: 1; ">
-    <img src="figures/output_mnist.png" width="400"><br>
-    <p>
+<table>
+  <tr>
+    <td>
+      <img src="figures/output_mnist.png" width="300"><br>
       MNIST model conditioning on label 3.
-    </p>
-  </div>
-
-  <div style="flex: 1; ">
-    <img src="figures/output_cifar.png" width="400"><br>
-    <p>
+    </td>
+    <td>
+      <img src="figures/output_cifar.png" width="300"><br>
       CIFAR model conditioning on label 'frog'.
-    </p>
-  </div>
-
-</div>
+    </td>
+  </tr>
+</table>
 
 
 ## Model
@@ -101,32 +96,22 @@ In case of 3x3 convolutions, we use a (2,1) padding in the PyTorch sense (2 rows
 - Vertical stack: Before passing the vertical convolution output to the tanh and sigmoid activations in the vertical stack, we crop the first and last rows. This removes the triangular blind spot as it allows the receptive field of the vertical stack to grow in a rectangular manner.
 
 
-See below images for a visual representation:
-
-<div style="display: flex; justify-content: space-around;">
-
-  <div style="flex: 1; padding: 10px;">
-    <img src="figures/vertical_input.png" width="400"><br>
-    <p>
+<table>
+  <tr>
+    <td>
+      <img src="figures/vertical_input.png" width="400"><br>
       This figure shows how we add padding (represented by white tiles) to the input of the vertical stack. We illustrate a 3x3 kernel of associated with the vertical convolution with a black outline, and we color the activated (non masked) elements in blue.
-    </p>
-  </div>
-
-  <div style="flex: 1; padding: 10px;">
-    <img src="figures/vertical_output1.png" width="400"><br>
-    <p>
-      This figure shows the output of the vertical convolution, and highlights in blue the element produced by the 3x3 kernel from the previous figure. The dotted line shows where we crop the image before routing the output to the element-wise addition with the output of the horizontal convolution.
-    </p>
-  </div>
-
-  <div style="flex: 1; padding: 10px;">
-    <img src="figures/vertical_output2.png" width="400"><br>
-    <p>
-      This figure shows the output of the vertical convolution, and highlights in blue the element produced by the 3x3 kernel from the previous figure. The dotted lines shows where we crop the image before routing the output to the activation functions in the vertical stack.
-    </p>
-  </div>
-
-</div>
+    </td>
+    <td>
+      <img src="figures/vertical_output1.png" width="400"><br>
+      This figure shows the output of the vertical convolution, and highlights in blue the element produced by the 3x3 convolution from the previous figure. The dotted line shows where we crop the image before routing the output to the element-wise addition with the output of the horizontal convolution.
+    </td>
+    <td>
+      <img src="figures/vertical_output2.png" width="400"><br>
+      This figure shows the output of the vertical convolution, and highlights in blue the element produced by the 3x3 convolution from the previous figure. The dotted lines shows where we crop the image before routing the output to the activation functions in the vertical stack.
+    </td>
+  </tr>
+</table>
 
 In some sense, if we look only at the vertical stack (the left part of the architecture illustrated in figure 3), we allow future information to leak into the output of the current pixel, as a given pixel gets to see its own value and the values to its right. However, this is necessary in order to allow the receptive field of the vertical stack to grow in a rectangular manner. Further, since we crop appropriately before combining the output of the vertical convolution with the horizontal convolution, no future information is actually leaked. The result is that we eliminate the blind spot problem, and our receptive field evolves as expected, illustrated in the below figure.
 
@@ -169,4 +154,5 @@ The gated activation at each pixel ends up looking something like
 $$
 y = \tanh(\text{conv\_out}_0 + f(h)) \circ \sigma(\text{conv\_out}_1 + g(h)), 
 $$
+
 where $h$ is the embedded label vector, and f,g are learnable transformations. This ensures that each pixel depends on both past pixels and the image label.
