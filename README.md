@@ -153,9 +153,11 @@ This embedding is broadcast across all spatial positions and added to the gated 
 
 
 The gated activation at each pixel ends up looking something like
+
 $$
-y = \tanh(\text{conv\_out}_0 + f(h)) \circ \sigma(\text{conv\_out}_1 + g(h)), 
+y = \tanh(\text{conv}_0(x) + f(h)) \circ \sigma(\text{conv}_1(x) + g(h)), 
 $$
 
 where $h$ is the embedded label vector, and f,g are learnable transformations. This ensures that each pixel depends on both past pixels and the image label.
+
 
