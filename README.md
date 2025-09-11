@@ -29,9 +29,11 @@ We train our model on CIFAR and MNIST datasets, conditioning on labels, and we a
 
 
 The PixelCNN model aims to capture the joint pixel distribution of given images. To do this, we use an autoregressive approach. That is, the probability of an image $\mathbf{x} = (x_1,\dots,x_n)$ is decomposed into conditional probabilities over pixels:
+
 $$
 p(\mathbf{x}) = \prod_{i = 1}^n p(x_i | x_1,...,x_{i-1}).
 $$
+
 where the pixels are enumerated in row-major order (left-to-right, top-to-bottom). 
 
 
@@ -156,3 +158,4 @@ y = \tanh(\text{conv\_out}_0 + f(h)) \circ \sigma(\text{conv\_out}_1 + g(h)),
 $$
 
 where $h$ is the embedded label vector, and f,g are learnable transformations. This ensures that each pixel depends on both past pixels and the image label.
+
